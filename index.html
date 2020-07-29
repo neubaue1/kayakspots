@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Kayaking Spots</title>
+<link rel="stylesheet" href="style.css">
+<!--font...>-->
+
+<!--leaflet CSS info copied and pasted from https://leafletjs.com/examples/quick-start/-->
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script> 
+
+<!--leaflet provider info for basemap-->
+ <!-- already copied this part, but newer, above
+  <script src="http://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script> 
+ -->
+  <script src="js/leaflet-providers.js"></script>
+</head>
+
+<body>
+
+	<div class = "intro">
+		<h1>Allison's Kayaking Spots</h1>
+		<h2>Exploring Chicagoland via inflatable kayak</h2>
+
+	</div>
+
+	<!--here is a description of the program that introduces the map. have to add target="_blank" to make link open in new tab.-->
+
+	<div class = "program-intro">
+		<p>Upon purchasing an inflatable kayak this spring, Allison received many recommendations from friends and coworkers for good spots to paddle in and around Chicago. The information displayed in the map below shows spots she's explored so far this summer.</p>
+		<p> A helpful website for planning these trips has been <a href="https://paddleillinoiswatertrails.org/" target="_blank" >Paddle Illinois Water Trails</a>.</p>
+	</div>
+
+	<div id = "map"><!--using leadlet here instead of embeding AGOL map--></div>
+
+	<script>
+	//now I'm doing javascript. commenting is done with "//"" instead of "<!--"
+	//initialize leaflet map
+	var map = L.map('map').setView([41.991, -87.936],10);
+
+	//add base layer--copied and pasted from https://leaflet-extras.github.io/leaflet-providers/preview/. don't forget ".addTo(map);" at end!
+	var CartoDB_Voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+	subdomains: 'abcd',
+	maxZoom: 19
+	}).addTo(map) ;
+
+	//add circle for home base. WHY IS THIS IN LAKE MICHIGAN? tried to center at belmont and damen...
+	var circle = L.circle([41.939618, -87,678173],{
+		// color: 'red',
+		// fillColor: '#f03',
+		// fillOpacity: 0.5,
+		// radius: 1000,
+	}).addTo(map).bindPopup("why is this over here???");
+		
+	//create kayak icon for markers, aka launch locations
+	var myIcon = L.icon({
+		iconUrl: 'kayakLaunch.png',
+		iconSize: [20,20],
+	});
+
+	//add markers for launch locations. Had to include more decimals to be closer to actual points--was not appearing on actual waterbodies when I zoomed in with just 2 decimal places.
+	var marker = L.marker([41.943397, -87.695174], {
+		icon: myIcon
+		}).addTo(map).bindPopup("Chicago River: put in and took out at Clark Park Boathouse launch");
+	
+	var marker = L.marker([41.869439, -88.162825], {
+		icon: myIcon
+		}).addTo(map).bindPopup("West Branch Dupage River: put in at Lions Park launch");
+
+	var marker = L.marker([41.842256, -88.198530], {
+		icon: myIcon
+		}).addTo(map).bindPopup("West Branch Dupage River: took out at Mack Road launch");
+
+	var marker = L.marker([42.115522, -87.771026], {
+		icon: myIcon
+		}).addTo(map).bindPopup("Skokie Lagoon: put in and took out at Tower Road launch");
+
+	//skokie lagoon polygon showing areas explored
+	var polygon = L.polygon ([
+		[42.134586, -87.785914],
+		[42.115668, -87.776537],
+		[42.101719, -87.767051], 
+		[42.101592, -87.757137], 
+		[42.110762, -87.762387],
+		[42.115983, -87.767008],
+		[42.134424, -87.780048],
+		]).addTo(map).bindPopup("Paddled through lagoons #1-6") ;
+	
+//dupage river line showing rough path paddled
+	var line = L.polyline([
+		[41.869439, -88.162825],
+		[41.866496, -88.166560],
+		[41.867845, -88.180941],
+		[41.868321, -88.179130],
+		[41.871653, -88.178491],
+		[41.866219, -88.189391],
+		[41.850787, -88.199797],
+		[41.842256, -88.198530],
+		]).addTo(map).bindPopup("Rough path paddled along the West Branch of the Dupage River");
+	
+//chicago river line showing rough path paddled
+	var line = L.polyline([
+		[41.943397, -87.695174],
+		[41.936630, -87.690307],
+		[41.931637, -87.681012],
+		[41.925251, -87.674465],
+		]).addTo(map).bindPopup("Paddled along the Chicago River to Fullerton Ave. and back");
+
+</script>
+
+</div>
+
+</body>
+
+</html>
+
+
